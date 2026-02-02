@@ -14,7 +14,6 @@ function App() {
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchKeyword, setSearchKeyword] = useState("");
 
-  // --- STATE MODAL ---
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newTodoName, setNewTodoName] = useState("");
   const [createError, setCreateError] = useState("");
