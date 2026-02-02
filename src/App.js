@@ -4,10 +4,7 @@ import Todo from './todo';
 
 function App() {
   const [todos, setTodos] = useState([
-    { id: 1, name: "Go to supermarket", status: "new" },
-    { id: 2, name: "Do my homework", status: "done" },
-    { id: 3, name: "Play game", status: "new" },
-    { id: 4, name: "Read novel", status: "new" }
+
   ]);
 
   const [selectedTodoId, setSelectedTodoId] = useState(2);
@@ -30,7 +27,15 @@ function App() {
 
   const handleTodoClick = (id) => {
     setSelectedTodoId(id);
+    const newTodos = todos.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, status: todo.status === 'done' ? 'new' : 'done' };
+      }
+      return todo;
+    });
+    setTodos(newTodos);
   };
+
   const handleOpenCreateModal = () => {
     setShowCreateModal(true);
     setNewTodoName("");
@@ -51,6 +56,7 @@ function App() {
     setTodos([...todos, newTodo]);
     setShowCreateModal(false);
   };
+
   const handleDeleteClick = (todo) => {
     setTodoToDelete(todo);
     setShowDeleteModal(true);
@@ -64,6 +70,7 @@ function App() {
       setTodoToDelete(null);
     }
   };
+
   const handleEditClick = (todo) => {
     setTodoToUpdate(todo);
     setUpdateTodoName(todo.name);
@@ -80,9 +87,14 @@ function App() {
       return;
     }
 
+    if (updateTodoName === todoToUpdate.name) {
+      setShowUpdateModal(false);
+      return;
+    }
+
     const newTodos = todos.map(t => {
       if (t.id === todoToUpdate.id) {
-        return { ...t, name: updateTodoName, status: 'done' };
+        return { ...t, name: updateTodoName };
       }
       return t;
     });
@@ -91,6 +103,7 @@ function App() {
     setShowUpdateModal(false);
     setTodoToUpdate(null);
   };
+
   const filteredTodos = todos.filter(todo => {
     if (filterStatus !== 'all' && todo.status !== filterStatus) return false;
     if (searchKeyword && !todo.name.toLowerCase().includes(searchKeyword.toLowerCase())) return false;
@@ -139,6 +152,7 @@ function App() {
            {filteredTodos.length === 0 && <p style={{textAlign: 'center', color: '#888', marginTop: '20px'}}>No todos found</p>}
         </div>
       </div>
+
       {showCreateModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -160,6 +174,7 @@ function App() {
           </div>
         </div>
       )}
+
       {showDeleteModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -173,6 +188,7 @@ function App() {
           </div>
         </div>
       )}
+
       {showUpdateModal && (
         <div className="modal-overlay">
           <div className="modal-content">
